@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user-specific settings and profile information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique identifier for the user." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "photoURL": { "type": "string", "format": "uri", "description": "The user's profile picture URL." },
+        "currency": { "type": "string", "enum": ["USD", "EUR", "GBP", "INR"], "description": "The user's preferred currency." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user profile was created." }
+      },
+      "required": ["uid", "email"]
+    },
+    "Transaction": {
+      "title": "Financial Transaction",
+      "description": "Represents an income or expense entry.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user ID who owns this transaction." },
+        "amount": { "type": "number", "description": "The monetary value of the transaction." },
+        "category": { "type": "string", "description": "The category (e.g., Food, Transport, Salary)." },
+        "type": { "type": "string", "enum": ["income", "expense"], "description": "Whether it's an income or expense." },
+        "description": { "type": "string", "description": "A brief note about the transaction." },
+        "date": { "type": "string", "format": "date-time", "description": "The date and time of the transaction." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the record was created." }
+      },
+      "required": ["uid", "amount", "category", "type", "date"]
+    },
+    "Budget": {
+      "title": "Monthly Budget",
+      "description": "Stores budget limits for different categories.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user ID who owns this budget." },
+        "category": { "type": "string", "description": "The category this budget applies to (or 'total' for overall)." },
+        "limit": { "type": "number", "description": "The maximum spending limit." },
+        "month": { "type": "string", "description": "The month in YYYY-MM format." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the budget was set." }
+      },
+      "required": ["uid", "category", "limit", "month"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial transaction records."
+    },
+    "/budgets/{budgetId}": {
+      "schema": "Budget",
+      "description": "Monthly budget settings."
+    }
+  }
+}
